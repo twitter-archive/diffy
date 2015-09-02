@@ -42,7 +42,13 @@ determines that there is nothing wrong and that the error can be ignored.
 
 ## How to get started?
 
-Here’s how you can start using Diffy to compare three instances of your service:
+Diffy comes bundled with an example.sh script that you can run to start comparing examples instances 
+we have already deployed online. Once your local Diffy instance is deployed, you send it a few requests 
+via `curl localhost:8880` and `curl localhost:8880/json`. You can then go to your browser at 
+[http://localhost:8888](http://localhost:8888) to see what the differences accross our example instances look like.
+
+That was cool but now you want to compare old and new versions of your own service. Here’s how you can 
+start using Diffy to compare three instances of your service:
 
 1. Deploy your old code to `localhost:9990`. This is your primary.
 2. Deploy your old code to `localhost:9991`. This is your secondary.
@@ -56,16 +62,17 @@ Here’s how you can start using Diffy to compare three instances of your servic
     -master.primary=\"localhost:9990\" \
     -master.secondary=\"localhost:9991\" \
     -service.protocol=\"http\" \
-    -serviceName=\"ConversationService\" \
+    -serviceName=\"My Service\" \
     -proxy.port=:31900 \
     -admin.port=:31159 \
-    -http.port=:31149
+    -http.port=:31149 \
+    -rootUrl='localhost:31149'
     ```
 
-6. Send a few test requests to your Diffy instance:
+6. Send a few test requests to your Diffy instance on its proxy port:
 
     ```
-    curl localhost:31900/your_application_route
+    curl localhost:31900/your/application/route?with=queryparams
     ```
 
 7. Watch the differences show up in your browser at [http://localhost:31149](http://localhost:31149).
