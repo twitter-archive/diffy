@@ -1,0 +1,520 @@
+$dark-primary: #2b3e50
+$medium-primary: lighten($dark-primary, 30)
+$light-primary: #D2D5D9
+$success: #5cb85c
+$header: #4e5d6c
+$difference-header-width: 13%
+$contrast: #df691a
+$difference-background-color: #ffbb99
+
+@mixin mono
+  font-family: 'Inconsolata', monospace
+@mixin roboto
+  font-family: 'Roboto Condensed', sans-serif
+@mixin lobster
+  font-family: 'Lobster', sans-serif
+
+h1, h2, h3, h4, h5, h6
+  @include roboto
+
+hr
+  width: 100%
+  border: 0
+  border-bottom: solid 1px #eee
+  margin: 5px 0
+
+html, body
+  overflow: hidden
+  font-size: 10pt
+
+a
+  cursor: pointer
+
+.btn
+  border-radius: 3px
+  margin-bottom: 5px
+
+.black
+  color: #000
+
+.clearfix:after
+  visibility: hidden
+  display: block
+  font-size: 0
+  content: " "
+  clear: both
+  height: 0
+
+.mono
+  @include mono
+
+.rating.poor
+  color: #b00
+.rating.perfect
+  color: #090
+.rating.neutral
+  color: #B57924
+.rating.almost
+  color: #7F9100
+
+.navbar
+  position: relative
+  .title
+    @include lobster
+    padding-left: 6px
+    font-size: 18pt
+    padding-right: 8px
+  .settings
+    cursor: pointer
+    position: absolute
+    right: 10pt
+    top: 9pt
+    font-size: 18pt
+    color: #fff
+    opacity: .3
+  .settings:hover
+    opacity: .5
+
+.left-panel, .right-panel
+  padding: 5px
+  width: 49%
+.left-panel
+  float: left
+  margin-right: 1%
+.left-panel.divider
+  border-right: solid 1px #ddd
+.right-panel
+  margin-left: 1%
+  float: right
+
+.header
+  margin-bottom: 20px
+  .title
+    margin-bottom: 0
+  .subtitle
+    opacity: .5
+    padding-left: 2px
+
+body
+  position: relative
+
+.popup
+  position: fixed
+  width: 100%
+  height: 100%
+  z-index: 20
+  color: #666
+  overflow: scroll
+  .background
+    background: #000
+    opacity: .6
+    position: fixed
+    width: 100%
+    height: 100%
+  .content
+    width: 900px
+    border: solid 1px $light-primary
+    margin: 20px auto 100px auto
+    padding: 10px
+    position: relative
+    background: #fff
+  h1, h2, h3, h4, h5, h6
+    color: #333
+  .difference
+    color: #000
+    background-color: $difference-background-color
+    padding: 2px 3px
+
+.tree-field
+  padding: 2px
+  .children
+    margin: 4px 0 0 10px
+    border-left: solid 1px #ddd
+    padding-left: 5px
+
+
+.highlighted
+  box-shadow: inset 0 0 2px #888888
+  background: lighten($medium-primary, 40)
+.highlighted:hover
+  border: $medium-primary
+
+.popup.settings
+  .server
+    margin-left: 10px
+  .stats
+    @include mono
+  hr
+    margin: 20px 0
+
+.popup.request
+  .responses, .request
+    @include mono
+  .request
+    padding: 5px
+    overflow-x: scroll
+  .time
+    position: absolute
+    text-align: right
+    right: 12px
+    top: 20px
+  .responses
+    .request
+      overflow-x: scroll
+      padding: 5px
+    .left, .right
+      width: 49%
+    .left
+      float: left
+      margin-right: 1%
+    .right
+      margin-left: 1%
+      float: right
+
+
+.endpoints-column
+  background: $dark-primary
+  color: #eee
+  border-right: solid 1px $light-primary
+  .dashboard-links a
+    display: inline-block
+    text-align: center
+    color: $medium-primary
+    background: darken($dark-primary, 10)
+    padding: 5px
+  .row
+    display: block
+    padding: 6px 8px
+    margin-bottom: 0
+    color: #bbb
+    font-size: 10pt
+    position: relative
+    text-decoration: none
+    border-top: solid 1px lighten($dark-primary, 10)
+  .row.last
+    border-bottom: solid 1px lighten($dark-primary, 10)
+  .row.info
+    color: lighten($dark-primary, 40)
+    background: lighten($dark-primary, 6)
+    padding: 10px 8px
+    margin-bottom: 20px
+    font-size: .9em
+  .row.endpoint
+    cursor: pointer
+    .title
+      .name
+        // font-weight: bold
+        color: #fff
+      .failing
+        @include roboto
+        text-align: right
+        position: absolute
+        right: 7px
+        top: 6px
+        display: box
+        .number
+          font-size: 13pt
+        .label
+          padding: 0
+          color: lighten($dark-primary, 20)
+          font-size: 8pt
+    .subtitle
+      color: #888
+  .row.endpoint:hover:not(.btn-primary)
+    background: darken($dark-primary, 5)
+  .row.endpoint.btn-primary
+    color: #fff
+    .failing
+      .number
+        color: lighten($contrast, 40)
+      .label
+        color: lighten($contrast, 40)
+    .subtitle
+      color: lighten($contrast, 30)
+
+.endpoints-column, .fields-column, .requests-column
+  position: relative
+  height: 100%
+  overflow: scroll
+  overflow-x: hidden
+
+.fields-column, .requests-column
+  color: #333
+
+.fields-column
+  padding-bottom: 40px
+  background: $light-primary
+  hr
+    margin: 20px 0
+    border-bottom: 1px solid darken($light-primary, 10)
+  .subtle
+    font-weight: bold
+    color: #999
+  .noshow
+    padding: 20px 10px
+  .header
+    z-index: 1
+    background: $light-primary
+    position: fixed
+    width: inherit
+    margin: -15px
+    padding: 10px
+    height: 70px
+    border-bottom: 1px solid darken($light-primary, 10)
+    .title
+      float: left
+    .stats
+      @include roboto
+      background: #d2d5d9
+      position: absolute
+      right: 10px
+      box-shadow: 0 0 5px 5px #d2d5d9
+      margin-top: 8px
+      padding-left: 0
+      text-align: right
+      li
+        display: inline
+        float: left
+        margin-left: 20px
+      li:first
+        margin-left: 5px
+      .percent
+        font-size: 16pt
+        margin: 5px 0 -5px 0
+      .description
+        font-size: 8pt
+        color: #999
+      .subtle
+        color: #999
+  .fields-container
+    margin-top: 70px
+    a
+      color: #444
+      text-decoration: none
+    .field.terminal
+      .title
+        padding-left: 0
+      .name
+        color: #900
+      .subtle
+        color: #999
+      .details
+        font-size: 9pt
+        margin-top: -3px
+        color: #777
+        .value
+          font-weight: bold
+    .field.excluded
+      a, .name, .details, .rating
+        color: #a1a1a1
+      .details
+        color: #999
+      .toggle
+        color: #999
+
+    .field
+      .toggle
+        float: right
+        cursor: pointer
+        height: 20px
+        width: 20px
+        color: #333
+        i
+          margin: 3px 0 0 2px
+          padding: 0px 0 0 2px
+      .toggle:hover
+        background: darken($light-primary, 3)
+      .action.nohover:hover
+        background: none
+      .action
+        float: left
+        width: 18px
+        height: 20px
+        display: block
+        .arrow
+          padding: 4px 0 0 6px
+        .checkbox
+          margin: 4px 0 0 3px
+      .title.selected, .title.selected:hover
+        background: lighten($light-primary, 5)
+      .title
+        cursor: pointer
+        padding: 1px 0 0 20px
+        display: block
+      .title:hover
+        background: darken($light-primary, 3)
+      .action:hover
+        background: darken($light-primary, 8)
+      .badge
+        margin-left: 5px
+        background: darken($light-primary, 5)
+        position: absolute
+        font-size: 9pt
+        color: $dark-primary
+    .name
+      @include mono
+      margin-bottom: 2px
+      font-size: 10pt
+    .children
+      margin-left: 15px
+
+
+.requests-column
+  padding-top: 10px
+  background: #eee
+  ins
+    color: #090
+  del
+    color: #900
+  strong
+    color: $medium-primary
+    font-weight: normal
+    text-decoration: underline
+  .pairpair
+    .pair
+      float: left
+      width: 50%
+      dt
+        width: $difference-header-width * 2
+      dd
+        width: 100 - $difference-header-width * 2
+  .pair
+    padding: 4px
+  .pair.expected, .pair.actual
+    background: #f9f9f9
+  .pair:hover
+    dt
+      color: darken($light-primary, 20)
+    dd
+      color: #333
+  .show-more
+    margin-top: 3px
+    padding: 5px
+    display: block
+    text-align: center
+    color: #999
+  .show-more:hover
+    background: #eee
+    color: #000
+  dt
+    @include roboto
+    width: $difference-header-width
+    float: left
+    font-size: 9pt
+    text-transform: uppercase
+    padding-top: 1pt
+    font-weight: normal
+    color: darken($light-primary, 10)
+  dd
+    @include mono
+    float: left
+    word-wrap: break-word
+    width: 100 - $difference-header-width
+    color: #666
+  .field, .field:hover
+    background: lighten($medium-primary, 40)
+    dt
+      color: darken($light-primary, 30)
+  .open
+    position: absolute
+    right: 15px
+    top: 15px
+  .difference
+    .path-item .separator
+      color: #ccc
+    .path-item:last-child
+      color: $medium-primary
+      .separator
+        display: none
+  .request
+    position: relative
+    margin-top: 10px
+    padding: 10px 10px
+    background: #fff
+    border: solid 1px #888
+    border-top-color: #ddd
+    border-left-color: #ddd
+
+// iphone toggle
+.checkbox-iphone
+  position: relative
+  margin-top: 5px
+  line-height: 30px
+  input
+    display: block
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    width: 0%
+    height: 0%
+    margin: 0 0
+    cursor: pointer
+    zoom: 1
+    -webkit-opacity: 0
+    -moz-opacity: 0
+    opacity: 0
+    filter: alpha(opacity=0)
+    + span
+      cursor: pointer
+      -webkit-user-select: none
+      -moz-user-select: none
+      -ms-user-select: none
+      user-select: none
+      padding-right: 60px
+      &:before
+        position: absolute
+        right: 0px
+        display: inline-block
+        content: ""
+        height: 30px
+        width: 60px
+        border-radius: 30px
+        line-height: 30px
+        background: rgba(100, 100, 100, 0.2)
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8)
+        transition: background 0.2s ease-out
+      &:after
+        position: absolute
+        width: 30px
+        height: 30px
+        right: 0
+        top: 0
+        margin-right: 30px
+        border-radius: 30px
+        line-height: 30px
+        display: block
+        background: #ffffff
+        transition: margin-right 0.1s ease-in-out
+        text-align: center
+        font-weight: bold
+        content: ""
+        border: solid transparent 2px
+        background-clip: padding-box
+        vertical-align: middle
+  input:checked
+    + span
+      &:before
+        transition: background 0.2s ease-in
+        background: #df691a
+      &:after
+        margin-right: 0
+        content: ""
+        border: solid transparent 2px
+        background-clip: padding-box
+        -webkit-animation: popIn ease-in 0.3s normal
+        animation: popIn ease-in 0.3s normal
+  input:not(:checked)
+    + span
+      &:after
+        -webkit-animation: popOut ease-in 0.3s normal
+        animation: popOut ease-in 0.3s normal
+  input:disabled
+    + span
+      color: #777777
+      &:after
+        border: solid transparent 2px
+        border-radius: 40px
+      &:before
+        box-shadow: 0 0 0 black

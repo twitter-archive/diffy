@@ -1,0 +1,13 @@
+junit_tests(
+  name='scala',
+  dependencies=[
+    '3rdparty/jvm/junit',
+    '3rdparty/jvm/org/mockito:mockito-all',
+    '3rdparty/jvm/org/scalatest',
+    'diffy/src/main/scala',
+    'finatra/http:test-deps',
+    'finatra/inject/inject-server:test-deps',
+    'util/util-core',
+  ],
+  sources=rglobs('*.scala'),
+)

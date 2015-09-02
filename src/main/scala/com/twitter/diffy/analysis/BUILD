@@ -1,0 +1,12 @@
+scala_library(
+  name='analysis',
+  dependencies=[
+    '3rdparty/jvm/javax/inject:javax.inject',
+    'diffy/src/main/scala/com/twitter/diffy/compare',
+    'diffy/src/main/scala/com/twitter/diffy/lifter',
+    'diffy/src/main/thrift:thrift-scala',
+    'util/util-core',
+    'util/util-logging'
+  ],
+  sources=globs('*.scala'),
+)

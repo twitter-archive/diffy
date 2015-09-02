@@ -1,0 +1,16 @@
+scala_library(
+  name='lifter',
+  dependencies=[
+    '3rdparty/jvm/com/fasterxml/jackson/core:jackson-databind',
+    '3rdparty/jvm/com/fasterxml/jackson/module:jackson-module-scala',
+    '3rdparty/jvm/com/google/guava',
+    '3rdparty/jvm/io/netty',
+    '3rdparty/jvm/javax/mail',
+    '3rdparty/jvm/org/apache/thrift:libthrift-0.5.0',
+    '3rdparty/jvm/org/jsoup',
+    'diffy/src/main/scala/com/twitter/diffy/scrooge',
+    'finagle/finagle-http',
+    'util/util-core'
+  ],
+  sources=globs('*.scala'),
+)

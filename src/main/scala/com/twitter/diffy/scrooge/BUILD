@@ -1,0 +1,9 @@
+scala_library(
+  name='scrooge',
+  dependencies=[
+    '3rdparty/jvm/org/apache/maven:maven-model',
+    'scrooge/scrooge-core',
+    'scrooge/scrooge-generator'
+  ],
+  sources=globs('*.scala'),
+)

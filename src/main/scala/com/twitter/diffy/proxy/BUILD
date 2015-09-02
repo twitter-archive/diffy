@@ -1,0 +1,12 @@
+scala_library(
+  name='proxy',
+  dependencies=[
+    'diffy/src/main/scala/com/twitter/diffy/analysis',
+    'diffy/src/main/scala/com/twitter/diffy/lifter',
+    'finatra/inject/inject-core',
+    'finagle/finagle-thriftmux',
+    'util/util-core',
+    'util/util-logging'
+  ],
+  sources=globs('*.scala'),
+)

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <body style="font-family: sans-serif; margin: 5px 15px; font-size: 10pt; color: #444">
+    <div class="overview" style="text-align: center; padding: 10px; margin-bottom: 15px; font-size: 14pt">
+      <strong>{{criticalDiffs}}</strong> critical warnings
+    </div>
+    <a href="{{rootUrl}}">Diffy for {{serviceName}}</a> compared <strong>master</strong> against <strong>production</strong> for <strong>{{delay}}</strong>.
+    {{^criticalEndpoints.isEmpty}}
+    <div class="critical" style="margin: 30px 0 10px 0; padding: 20px 0 15px; border-top: solid 1px #ddd; border-bottom: solid 1px #ddd;">
+      <div style="font-weight: bold; margin-bottom: 10px;">Critical Endpoints</div>
+      {{#criticalEndpoints}}
+      <div class="endpoint" style="margin-bottom: 15px">
+        <div class="mono" style="margin: 5px 0 10px 0; font-family: monospace">
+          <a href="{{rootUrl}}#/ep/{{endpointName}}" style="color:#000">{{endpointName}}</a>
+          -
+          <span style="font-weight: normal; color: #999">{{count}} requests</span>
+        </div>
+        <div class="inner">
+          {{#fields}}
+          <div class="field mono" style="border-left: solid 1px #ccc; padding: 0 5px 0 10px; margin: 5px; margin-left: 15px; font-family: monospace">
+            <span class="relative" style="color: #900; font-weight: bold; display: inline-block; width: 80px;">{{absoluteDifference}}%</span>
+            <a href="{{rootUrl}}#/ep/{{endpointName}}/{{fieldName}}" class="title" style="color: #000; text-decoration: none; border-bottom: solid 1px #ccc">{{fieldName}}</a>
+          </div>
+          {{/fields}}
+        </div>
+      </div>
+      {{/criticalEndpoints}}
+    </div>
+    <div style="font-size: .8em; color: #999; margin-bottom: 40px">
+      <strong>*</strong> The percentages above are the relative difference between live-prod and prod-prod mismatches. See <a href="http://go/docbird/diffy/thresholds.html">difference metrics</a> for more details.
+    </div>
+    {{/criticalEndpoints.isEmpty}}
+    <div class="passing" style="margin: 20px 0; padding: 10px 0 5px; border-top: solid 1px #ddd; border-bottom: solid 1px #ddd;">
+      <div style="font-weight: bold; margin-bottom: 10px;">Passing Endpoints</div>
+      {{#passingEndpoints}}
+        <div class="mono" style="margin: 5px 0; font-family: monospace">
+          <a href="{{rootUrl}}#/ep/{{endpointName}}" style="color:#000">{{endpointName}}</a>
+          -
+          <span style="font-weight: normal; color: #999">{{count}} requests</span>
+        </div>
+      {{/passingEndpoints}}
+    </div>
+    <br />
+  </body>
+</html>

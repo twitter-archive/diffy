@@ -1,0 +1,12 @@
+scala_library(
+  name='diffy',
+  dependencies=[
+    'diffy/src/main/scala/com/twitter/diffy/proxy',
+    'diffy/src/main/scala/com/twitter/diffy/workflow',
+    'finatra/http',
+  ],
+  sources=globs('*.scala'),
+  resources=[
+    'diffy/src/main/resources'
+  ]
+)

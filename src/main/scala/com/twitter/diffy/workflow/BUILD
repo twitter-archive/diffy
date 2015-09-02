@@ -1,0 +1,11 @@
+scala_library(
+  name='workflow',
+  dependencies=[
+    'diffy/src/main/scala/com/twitter/diffy/analysis',
+    'diffy/src/main/scala/com/twitter/diffy/proxy',
+    'diffy/src/main/scala/com/twitter/diffy/util',
+    'finatra/http',
+    'util/util-core'
+  ],
+  sources=globs('*.scala'),
+)

@@ -1,0 +1,267 @@
+<html ng-app="diffy">
+  <head>
+    <title>Diffy - {{serviceName}}</title>
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/underscore.min.js"></script>
+    <script src="/scripts/angular.min.js"></script>
+    <script src="/scripts/grapnel.min.js"></script>
+    <script src="/scripts/moment.min.js"></script>
+    <script src="/scripts/deep-diff.min.js"></script>
+
+    <script src="/scripts/diff.js"></script>
+
+    <script type="text/javascript">
+      var dashboardName = "{{dashboard}}";
+      var apiRoot = "{{apiRoot}}";
+      var excludeNoise = {{excludeNoise}};
+      var relativeThreshold = {{relativeThreshold}};
+      var absoluteThreshold = {{absoluteThreshold}};
+    </script>
+
+    <script id="field-template" type="text/ng-template">
+      <div class="field" class="hover" ng-init="parent=field; meta=getGlobalMetadata(field.path); terminal=!size(field.children)" ng-class="{'excluded': !meta.included || (!field.terminal && !meta.childrenIncluded), 'hover': meta.mouseover, 'terminal': terminal}">
+        <div class="node clearfix">
+          <a class="action" ng-class="{nohover: terminal}" ng-click="meta.collapsed = !meta.collapsed;">
+            <i class="fa arrow" ng-hide="terminal" ng-class="meta.collapsed ? 'fa-caret-right' : 'fa-caret-down'"/></i>
+          </a>
+          <a class="toggle" ng-click="meta.included=!meta.included;traverseFields(fields, endpointName)">
+            <i ng-hide="meta.included" class="subtle fa fa-circle-o"></i>
+            <i ng-show="meta.included" class="fa fa-dot-circle-o"></i>
+          </a>
+          <a class="title" ng-class="meta.selected ? 'selected' : ''" deep-link="['ep', endpointName, field.path]">
+            <div class="name">
+              [[name]]
+              <span ng-if="false" ng-if="parent.terminal">
+                <span class="badge">
+                  span class="value">[[meta.differences / endpoint.total * 100 | number:2]]%</span>
+                  <span class="subtle">-</span>
+                  [[meta.differences]]
+                  <span class="subtle">-</span>
+                  <span class="value">[[parent.noise / endpoint.total * 100 | number:2]]%</span>
+                </span>
+              </span>
+            </div>
+            <div class="details rating" ng-if="parent.terminal" ng-class="percentageRating(meta.differences/endpoint.total * 100)" ng-if="meta.differences>0">
+              <span class="value">[[meta.differences / endpoint.total * 100 | number:2]]%</span> failing
+              <span class="subtle">|</span>
+              <span class="value">[[meta.differences]]</span> diffs
+              <span class="subtle">|</span>
+              <span class="value">[[parent.noise / endpoint.total * 100 | number:2]]%</span> noise
+            </div>
+          </a>
+        </div>
+
+        <div class="children" ng-hide="meta.collapsed" ng-repeat="(name, field) in field.children">
+          <div ng-include src="'field-template'"></div>
+        </div>
+      </div>
+    </script>
+
+    <script id="tree-node-template" type="text/ng-template">
+      <div class="tree-field" ng-repeat="(key, obj) in obj" ng-init="
+        children=size(obj);
+        objIsObject=isObject(obj);
+        objIsArray=isArray(obj)">
+        <div ng-if="objIsObject || objIsArray" data-path="[[key]]">
+          <span class="title">[[key]]</span>
+          <div class="children">
+            <div ng-include src="'tree-node-template'"></div>
+          </div>
+        </div>
+        <div ng-if="!objIsObject && !objIsArray" data-path="[[key]]">
+          <span class="title">[[key]]: </span>
+          <strong>[[obj]]</strong>
+        </div>
+      </div>
+    </script>
+
+    <script id="server-template" type="text/ng-template">
+      <div><strong>Target: </strong>[[server.target]]</div>
+      <div><strong>Members: </strong>[[server.members]]</div>
+      <div><strong>Last Reset: </strong>[[server.last_reset | ago]] ([[server.last_reset | formatDate]])</div>
+      <div><strong>Last Changed: </strong>[[server.last_changed | ago]] ([[server.last_changed | formatDate]])</div>
+    </script>
+
+
+  </head>
+  <body>
+    <div class="popup settings" ng-on-esc="visible=false" ng-show="visible" ng-controller="SettingsController">
+      <div class="background" ng-click="visible=false"></div>
+      <div class="content">
+        <div class="stats">
+          <div class="left-panel divider">
+            <h4>Candidate Server</h4>
+            <div class="server" ng-include src="'server-template'" ng-repeat='server in [info.candidate]'></div>
+            <h4>Primary Server</h4>
+            <div class="server" ng-include src="'server-template'" ng-repeat='server in [info.primary]'></div>
+            <h4>Secondary Server</h4>
+            <div class="server" ng-include src="'server-template'" ng-repeat='server in [info.secondary]'></div>
+          </div>
+          <div class="right-panel">
+            <h4>Protocol</h4>
+            [[info.protocol]]
+            <h4>Service Class</h4>
+            [[info.service_class]]
+            <h4>Thrift Artifactory Package</h4>
+            [[info.artifactory_package]]
+            <h4>Client ID</h4>
+            [[info.client_id]]
+            <h4>Last Reset</h4>
+            [[info.last_reset | ago]] ([[info.last_reset | formatDate]])
+            <h4>Thresholds</h4>
+            <strong>[[info.threshold_relative]]%</strong> relative, <strong>[[info.threshold_absolute]]%</strong> absolute
+            <a href="http://go/diffy/thresholds.html">(more on thresholds)</a>
+          </div>
+        </div>
+        <hr />
+        <div class="actions">
+          <a ng-class="{disabled: clearLoading, 'btn-danger': !cleared, 'btn-success': cleared}" ng-click="clear()" class="btn">
+            <span ng-hide="cleared">Clear All Requests</span>
+            <span ng-show="cleared">Cleared</span>
+          </a>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="popup request" ng-on-esc="back()" ng-show="request.id" ng-controller="RequestController">
+      <div class="background" ng-click="back()"></div>
+      <div class="content">
+        <div class="time mono">
+          [[request.timestamp_msec | formatDate]]
+        </div>
+        <h4>Request</h4>
+        <i ng-show="loading" class="loading fa fa-circle-o-notch fa-spin"></i>
+        <div ng-hide="loading" class="request highlighted" ng-repeat="obj in [request.request]" ng-include src="'tree-node-template'">
+        </div>
+
+        <i ng-show="loading" class="loading fa fa-circle-o-notch fa-spin" ></i>
+        <div ng-hide="loading" class="responses clearfix" request-tree-highlight>
+          <div class="left">
+            <h4>Primary Response</h4>
+            <div class="highlighted request" ng-repeat="obj in [request.left]" ng-include src="'tree-node-template'"></div>
+          </div>
+          <div class="right">
+            <h4>Candidate Response</h4>
+            <div class="highlighted request" ng-repeat="obj in [request.right]" ng-include src="'tree-node-template'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid row">
+      <div class="col-xs-2 endpoints-column" ng-controller="EndpointController">
+        <nav class="row navbar navbar-default" role="navigation">
+          <span class="title">diffy</span>
+          <a class="settings" ng-click="showSettings()"><i class="fa fa-cog"></i></a>
+        </nav>
+
+        <div class="header">
+          <h2 class="title">{{serviceName}}</h2>
+          <div class="subtitle">{{serviceClass}}</div>
+        </div>
+
+        <div class="row info last">
+          Last reset <strong>[[info.last_reset | ago]]</strong>
+        </div>
+
+        <div class="row">
+          <div class="checkbox-iphone">
+            <label>
+              <input type="checkbox" ng-model="globalExclusion" ng-change="excludeAll()">
+              <span>Exclude Noise</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="endpoints-container">
+          <a class="row mono endpoint"
+            ng-init="meta=metadata.get(endpoint.name);"
+            deep-link="['ep', endpoint.name]"
+            ng-class="meta.selected ? 'btn-primary' : ''"
+            ng-repeat="(i, endpoint) in endpoints">
+            <div class="title">
+              <span class="name" ng-bind="endpoint.name"></span>
+              <div class="failing">
+                <div class="number rating" ng-class="percentageRating(endpoint.failureRate * inclusionPercentage(endpoint.name) * 100)">
+                  [[endpoint.failureRate * 100 * inclusionPercentage(endpoint.name) | number:1]]%
+                </div>
+                <div class="label">FAILING</div>
+              </div>
+            </div>
+            <div class="subtitle" >
+              <span class="count">[[endpoint.stats.total]] Requests</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-xs-4 fields-column" ng-controller="FieldsController">
+        <div class="header clearfix" ng-hide="!endpointName">
+          <h3 class="title">[[endpointName]]</h3>
+          <ul class="stats" ng-hide="loading">
+            <li>
+              <div class="number percent rating" ng-class="percentageRating(percentage)">[[diffs]]</div>
+              <div class="description">DIFFS</div>
+            </li>
+            <li>
+              <div class="number percent rating" ng-class="percentageRating(percentage)">[[endpoint.total]]</div>
+              <div class="description">REQUESTS</div>
+            </li>
+            <li>
+              <div class="number percent rating" ng-class="percentageRating(percentage)">[[percentage | number:2]]</div>
+              <div class="description">% FAILING</div>
+            </li>
+          </ul>
+        </div>
+        <div class="fields-container">
+          <i class="loading fa fa-circle-o-notch fa-spin" ng-show="loading"></i>
+          <div class="noshow" ng-show="!hasFields() && rawFields != undefined">
+            No differences
+          </div>
+          <div ng-repeat="(name, field) in fields">
+            <div ng-include src="'field-template'"></div>
+          </div>
+        </div>
+        <div ng-show="hasFields()" class="controls" ng-show="fields">
+          <hr />
+          <a class="btn btn-primary btn-sm" ng-click="expandAll()">Expand All</a>
+          <a class="btn btn-primary btn-sm" ng-click="clearExclusions(endpointName)">Clear Exclusions</a>
+          <a class="btn btn-primary btn-sm" ng-click="autoExclude(endpointName)">Auto Exclude</a>
+          <a class="btn btn-primary btn-sm" ng-click="collapseExcluded()">Collapse Excluded</a>
+        </div>
+      </div>
+
+      <div class="col-xs-6 requests-column" ng-controller="RequestsController">
+        <i class="fa fa-circle-o-notch fa-spin" ng-show="loading"></i>
+        <div class="request" ng-repeat="request in requests">
+          <a class="open" deep-link="['ep', endpointName, path, request.id]"><i class="fa fa-external-link"></i></a>
+          <div class="diff" >
+            <div class="difference clearfix" ng-hide="difference.collapsed" ng-repeat="(path, difference) in request.differences">
+              <div class="pair field clearfix">
+                <dt>Field</dt>
+                <dd><span class="path-item" ng-repeat="pathItem in path.split('.') track by $index">[[pathItem]]<span class="separator">/</span></span></dd>
+              </div>
+              <div class="pair expected clearfix">
+                <dt>Expected</dt>
+                <dd>[[difference.left]]</dd>
+              </div>
+              <div class="pair actual clearfix">
+                <dt>Actual</dt>
+                <dd>[[difference.right]]</dd>
+              </div>
+            </div>
+          </div>
+          <a class="show-more" ng-click="uncollapse(request.differences)" ng-hide='countCollapsed(request.differences)==0'>
+            <i class="fa fa-chevron-down"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.superhero.css" />
+    <link rel="stylesheet" type="text/css" href="/css/diff.css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Roboto+Condensed|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  </body>
+</html>

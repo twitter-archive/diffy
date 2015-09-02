@@ -1,0 +1,10 @@
+scala_library(
+  name='util',
+  dependencies=[
+    '3rdparty/jvm/javax/mail',
+    '3rdparty/jvm/org/apache/thrift:libthrift-0.5.0',
+    'util/util-core',
+    'util/util-logging'
+  ],
+  sources=globs('*.scala'),
+)
