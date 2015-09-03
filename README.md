@@ -8,7 +8,8 @@
 
 ## Status
 
-This project is used in production at Twitter and is being actively developed and maintained.
+This project is used in production at Twitter and is being actively developed and maintained. Feel 
+free to contact us on gitter or [@diffyproject](https://twitter.com/diffyproject).
 
 ## What is Diffy?
 
