@@ -44,6 +44,9 @@ determines that there is nothing wrong and that the error can be ignored.
 
 ## How to get started?
 
+First, you need to build Diffy by invoking `./sbt assembly` from your diffy directory. This will create 
+a diffy jar at `diffy/target/scala-2.11/diffy-server.jar`.
+
 Diffy comes bundled with an example.sh script that you can run to start comparing examples instances 
 we have already deployed online. Once your local Diffy instance is deployed, you send it a few requests 
 via `curl localhost:8880` and `curl localhost:8880/json`. You can then go to your browser at 
