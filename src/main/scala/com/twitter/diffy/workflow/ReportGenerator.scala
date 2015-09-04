@@ -49,9 +49,9 @@ class ReportGenerator @Inject()(
 
   def buildMessage(report: ReportData) : SimpleMessage = {
     SimpleMessage(
-      from = "Diffy <diffy@twitter.com>",
+      from = "Diffy <diffy@no-reply.com>",
       to = settings.teamEmail,
-      bcc = "Diffy Team <diffy-team@twitter.com>",
+      bcc = settings.teamEmail,
       subject = buildSubject(report.serviceName, report.criticalDiffs),
       body = new String(mustacheService.createChannelBuffer("cron_report.mustache", report).toByteBuffer.array)
     )
