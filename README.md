@@ -49,7 +49,7 @@ a diffy jar at `diffy/target/scala-2.11/diffy-server.jar`.
 
 Diffy comes bundled with an example.sh script that you can run to start comparing examples instances 
 we have already deployed online. Once your local Diffy instance is deployed, you send it a few requests 
-via `curl localhost:8880` and `curl localhost:8880/json`. You can then go to your browser at 
+via `curl --header "Canonical-Resource: Html" localhost:8880` and `curl --header "Canonical-Resource: Json" localhost:8880/json`. You can then go to your browser at 
 [http://localhost:8888](http://localhost:8888) to see what the differences across our example instances look like.
 
 That was cool but now you want to compare old and new versions of your own service. Here’s how you can 
