@@ -12,7 +12,7 @@ import com.twitter.util.StorageUnitConversions._
 import scala.util.Random
 
 object DifferenceAnalyzer {
-  val NoControllerFound = Some("No_controller_reached")
+  val UndefinedEndpoint = Some("Undefined_endpoint")
   val log = Logger(classOf[DifferenceAnalyzer])
   log.setUseParentHandlers(false)
   log.addHandler(
@@ -101,8 +101,8 @@ class DifferenceAnalyzer @Inject()(
       secondaryEndpoint: Option[String]): Option[String] = {
     val rawEndpointName = (requestEndpoint, candidateEndpoint, primaryEndpoint, secondaryEndpoint) match {
       case (Some(_), _, _, _) => requestEndpoint
-      // No controller reached when action header is missing from all three instances
-      case (_, None, None, None) => NoControllerFound
+      // undefined endpoint when action header is missing from all three instances
+      case (_, None, None, None) => UndefinedEndpoint
       // the assumption is that primary and secondary should call the same endpoint,
       // otherwise it's noise and we should discard the request
       case (_, None, _, _) if primaryEndpoint == secondaryEndpoint => primaryEndpoint
