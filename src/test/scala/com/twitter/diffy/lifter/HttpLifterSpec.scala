@@ -81,33 +81,11 @@ class HttpLifterSpec extends ParentSpec {
 
     describe("LiftResponse") {
       it("lift simple Json response") {
-        val lifter = new HttpLifter(false)
-        val resp = response(HttpResponseStatus.OK, validJsonBody)
+        checkJsonContentTypeIsLifted(MediaType.JSON_UTF_8.toString)
+      }
 
-        val msg = Await.result(lifter.liftResponse(Try(resp)))
-        val resultFieldMap = msg.result.asInstanceOf[FieldMap[Map[String, Any]]]
-        val status = resultFieldMap.keySet.headOption.value
-        val headers = resultFieldMap.get(status).value
-          .get("headers").value.asInstanceOf[FieldMap[Any]]
-        val content = resultFieldMap.get(status).value.get("content").value.asInstanceOf[JsonNode]
-
-        msg.endpoint.get should equal (controllerEndpoint)
-        status should equal (HttpResponseStatus.OK.getCode.toString)
-        headers.get(HttpLifter.ControllerEndpointHeaderName).get should equal (
-          ArrayBuffer(controllerEndpoint))
-        headers.get(HttpHeaders.Names.CONTENT_TYPE).get should equal (
-          ArrayBuffer(jsonContentType))
-        headers.get(HttpHeaders.Names.CONTENT_LENGTH).get should equal (
-          ArrayBuffer(validJsonBody.length.toString))
-        content.get("data_type").asText should equal ("account")
-        content.get("total_count").asInt should equal (2)
-        content.get("next_cursor").isNull should be (true)
-        val data = content.get("data")
-        data should have size (2)
-        data.get(0).get("name").asText should equal ("Account 1")
-        data.get(0).get("deleted").asBoolean should equal (false)
-        data.get(1).get("name").asText should equal ("Account 2")
-        data.get(1).get("deleted").asBoolean should equal (true)
+      it("lift simple Json response when the charset is not set") {
+        checkJsonContentTypeIsLifted(MediaType.JSON_UTF_8.withoutParameters().toString)
       }
 
       it("exclude header in response map if excludeHttpHeadersComparison flag is off") {
@@ -191,6 +169,37 @@ class HttpLifterSpec extends ParentSpec {
         val msg = Await.result(lifter.liftResponse(Try(resp)))
         val resultFieldMap = msg.result
         resultFieldMap.get("headers") should not be (None)
+      }
+
+      def checkJsonContentTypeIsLifted(contentType: String): Unit = {
+        val lifter = new HttpLifter(false)
+        val resp = response(HttpResponseStatus.OK, validJsonBody)
+        resp.headers.set(HttpHeaders.Names.CONTENT_TYPE, contentType)
+
+        val msg = Await.result(lifter.liftResponse(Try(resp)))
+        val resultFieldMap = msg.result.asInstanceOf[FieldMap[Map[String, Any]]]
+        val status = resultFieldMap.keySet.headOption.value
+        val headers = resultFieldMap.get(status).value
+          .get("headers").value.asInstanceOf[FieldMap[Any]]
+        val content = resultFieldMap.get(status).value.get("content").value.asInstanceOf[JsonNode]
+
+        msg.endpoint.get should equal(controllerEndpoint)
+        status should equal(HttpResponseStatus.OK.getCode.toString)
+        headers.get(HttpLifter.ControllerEndpointHeaderName).get should equal(
+          ArrayBuffer(controllerEndpoint))
+        headers.get(HttpHeaders.Names.CONTENT_TYPE).get should equal(
+          ArrayBuffer(contentType))
+        headers.get(HttpHeaders.Names.CONTENT_LENGTH).get should equal(
+          ArrayBuffer(validJsonBody.length.toString))
+        content.get("data_type").asText should equal("account")
+        content.get("total_count").asInt should equal(2)
+        content.get("next_cursor").isNull should be(true)
+        val data = content.get("data")
+        data should have size (2)
+        data.get(0).get("name").asText should equal("Account 1")
+        data.get(0).get("deleted").asBoolean should equal(false)
+        data.get(1).get("name").asText should equal("Account 2")
+        data.get(1).get("deleted").asBoolean should equal(true)
       }
     }
   }
