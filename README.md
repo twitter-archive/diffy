@@ -83,7 +83,7 @@ start using Diffy to compare three instances of your service:
 7. Watch the differences show up in your browser at [http://localhost:31149](http://localhost:31149).
  
 ## FAQ's
-   For safety reasons `POST`, `PUT`, ` DELETE ` are ignored by default for safety. Add ` -allowHttpSideEffects=true ` to your command line arguments to enable these verbs.
+   For safety reasons `POST`, `PUT`, ` DELETE ` are ignored by default . Add ` -allowHttpSideEffects=true ` to your command line arguments to enable these verbs.
 
 
 ## License
