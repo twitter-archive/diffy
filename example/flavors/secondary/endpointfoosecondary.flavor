@@ -1,0 +1,10 @@
+## ! ~/.rest_shifter/flavors/hello_world.flavor
+method_used                 = "get"
+path                        = "/endpoint/foo"
+request_accept              = ""
+request_content_type        = ""
+response_sleep              = 0
+response_status             = "400"
+response_body               = { "foo" : "secondary", "started_at": "2015-09-18T09:22:53Z", "last_modified_at": "2015-09-18T09:22:53Z" }
+response_content_type       = "application/json"
+response_location           = ""

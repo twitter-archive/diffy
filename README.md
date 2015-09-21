@@ -80,6 +80,11 @@ start using Diffy to compare three instances of your service:
     curl localhost:31900/your/application/route?with=queryparams
     ```
 
+### Running example on docker-compose
+
+Inside the example directory you will find instructions to run a complete example with apis and diffy configured and ready to run using docker-compose.
+
+
 7. Watch the differences show up in your browser at [http://localhost:31149](http://localhost:31149).
  
 ## FAQ's
