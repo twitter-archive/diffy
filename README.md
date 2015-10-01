@@ -81,6 +81,10 @@ start using Diffy to compare three instances of your service:
     ```
 
 7. Watch the differences show up in your browser at [http://localhost:31149](http://localhost:31149).
+
+### Running example on docker-compose
+
+Inside the example directory you will find instructions to run a complete example with apis and diffy configured and ready to run using docker-compose.
  
 ## FAQ's
    For safety reasons `POST`, `PUT`, ` DELETE ` are ignored by default . Add ` -allowHttpSideEffects=true ` to your command line arguments to enable these verbs.
