@@ -4,10 +4,27 @@ import java.net.SocketAddress
 
 import com.twitter.diffy.analysis.{DifferenceAnalyzer, JoinedDifferences, InMemoryDifferenceCollector}
 import com.twitter.diffy.lifter.{HttpLifter, Message}
-import com.twitter.finagle.{Http, Filter}
-import com.twitter.finagle.http.{Method, Request}
+import com.twitter.diffy.proxy.DifferenceProxy.NoResponseException
+import com.twitter.finagle.{Service, Http, Filter}
+import com.twitter.finagle.http.{Status, Response, Method, Request}
 import com.twitter.util.{Try, Future}
 import org.jboss.netty.handler.codec.http.{HttpResponse, HttpRequest}
+
+object HttpDifferenceProxy {
+  val okResponse = Future.value(Response(Status.Ok))
+
+  val noResponseExceptionFilter =
+    new Filter[HttpRequest, HttpResponse, HttpRequest, HttpResponse] {
+      override def apply(
+        request: HttpRequest,
+        service: Service[HttpRequest, HttpResponse]
+      ): Future[HttpResponse] = {
+        service(request).rescue[HttpResponse] { case NoResponseException =>
+          okResponse
+        }
+      }
+    }
+}
 
 trait HttpDifferenceProxy extends DifferenceProxy {
   val servicePort: SocketAddress
@@ -20,7 +37,11 @@ trait HttpDifferenceProxy extends DifferenceProxy {
   override def serviceFactory(serverset: String, label: String) =
     HttpService(Http.newClient(serverset, label).toService)
 
-  override lazy val server = Http.serve(servicePort, proxy)
+  override lazy val server =
+    Http.serve(
+      servicePort,
+      HttpDifferenceProxy.noResponseExceptionFilter andThen proxy
+    )
 
   override def liftRequest(req: HttpRequest): Future[Message] =
     lifter.liftRequest(req)
@@ -40,7 +61,7 @@ object SimpleHttpDifferenceProxy {
       val hasSideEffects =
         Set(Method.Post, Method.Put, Method.Delete).contains(Request(req).method)
 
-      if (hasSideEffects) DifferenceProxy.NoResponseException else svc(req)
+      if (hasSideEffects) DifferenceProxy.NoResponseExceptionFuture else svc(req)
     }
 }
 

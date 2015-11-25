@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 java -jar ./target/scala-2.11/diffy-server.jar \
--candidate='http-candidate.herokuapp.com:80' \
--master.primary='http-primary.herokuapp.com:80' \
--master.secondary='http-secondary.herokuapp.com:80' \
+-candidate='localhost:9200' \
+-master.primary='localhost:9000' \
+-master.secondary='localhost:9100' \
 -service.protocol='http' \
 -serviceName='My Service' \
 -proxy.port=:8880 \

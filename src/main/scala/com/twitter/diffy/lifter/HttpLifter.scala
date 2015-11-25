@@ -50,6 +50,8 @@ class HttpLifter(excludeHttpHeadersComparison: Boolean) {
       val mediaTypeOpt: Option[MediaType] =
         Option(r.headers.get(HttpHeaders.CONTENT_TYPE)) map { MediaType.parse }
 
+println(mediaTypeOpt)
+      
       val contentLengthOpt = Option(r.headers.get(HttpHeaders.CONTENT_LENGTH))
 
       /** header supplied by macaw, indicating the controller reached **/
