@@ -14,7 +14,7 @@ candidate:
   ports:
     - "9881:8080"
   volumes:
-    - flavors/candidate:/root/.rest_shifter/flavors
+    - ./flavors/candidate:/root/.rest_shifter/flavors
   command: -s
 
 primary:
@@ -22,7 +22,7 @@ primary:
   ports:
     - "9882:8080"
   volumes:
-    - flavors/primary:/root/.rest_shifter/flavors
+    - ./flavors/primary:/root/.rest_shifter/flavors
   command: -s
 
 secondary:
@@ -30,5 +30,5 @@ secondary:
   ports:
     - "9883:8080"
   volumes:
-    - flavors/secondary:/root/.rest_shifter/flavors
+    - ./flavors/secondary:/root/.rest_shifter/flavors
   command: -s
