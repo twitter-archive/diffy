@@ -49,8 +49,6 @@ class HttpLifter(excludeHttpHeadersComparison: Boolean) {
     Future.const(resp) flatMap { r: HttpResponse =>
       val mediaTypeOpt: Option[MediaType] =
         Option(r.headers.get(HttpHeaders.CONTENT_TYPE)) map { MediaType.parse }
-
-println(mediaTypeOpt)
       
       val contentLengthOpt = Option(r.headers.get(HttpHeaders.CONTENT_LENGTH))
 
