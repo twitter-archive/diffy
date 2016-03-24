@@ -91,13 +91,12 @@ Inside the example directory you will find instructions to run a complete exampl
 
 ## HTTPS
 If you are trying to run Diffy over a HTTPS API, the config required is:
-    ```
+
     -service.protocol=https
-    ```
+   
 And in case of the HTTPS port be different than 443:
-    ```
+
     -https.port=123
-     ```
 
 ## License
 
