@@ -70,6 +70,9 @@ object DiffyServiceModule extends TwitterModule {
   val skipEmailsWhenNoErrors =
     flag[Boolean]("skipEmailsWhenNoErrors", false, "Do not send emails if there are no critical errors")
 
+  var httpsPort =
+    flag[String]("httpsPort", "443", "Port to be used when using HTTPS as a protocol")
+
   @Provides
   @Singleton
   def settings =
@@ -93,7 +96,8 @@ object DiffyServiceModule extends TwitterModule {
       rootUrl(),
       allowHttpSideEffects(),
       excludeHttpHeadersComparison(),
-      skipEmailsWhenNoErrors()
+      skipEmailsWhenNoErrors(),
+      httpsPort()
     )
 
   @Provides
