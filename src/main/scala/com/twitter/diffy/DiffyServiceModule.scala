@@ -26,7 +26,7 @@ object DiffyServiceModule extends TwitterModule {
     flag[String]("master.secondary", "secondary master serverset where known good code is deployed")
 
   val protocol =
-    flag[String]("service.protocol", "Service protocol, thrift, http or https")
+    flag[String]("service.protocol", "Service protocol: thrift, http or https")
 
   val clientId =
     flag[String]("proxy.clientId", "diffy.proxy", "The clientId to be used by the proxy service to talk to candidate, primary, and master")
