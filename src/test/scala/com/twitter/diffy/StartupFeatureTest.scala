@@ -11,7 +11,7 @@ class StartupFeatureTest extends Test {
     twitterServer = new MainService {
     },
     extraArgs = Seq(
-      "-proxy.port=:9992",
+      "-proxy.port=:0",
       "-candidate=localhost:80",
       "-master.primary=localhost:80",
       "-master.secondary=localhost:80",
