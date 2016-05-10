@@ -75,11 +75,12 @@ class DifferenceAnalyzer @Inject()(
     }
   }
 
-  def clear(): Future[Unit] = Future {
-    rawCounter.counter.clear()
-    noiseCounter.counter.clear()
-    store.clear()
-  }
+  def clear(): Future[Unit] =
+    Future.join(
+      rawCounter.counter.clear(),
+      noiseCounter.counter.clear(),
+      store.clear()
+    ) map { _ => () }
 
   def differencesToJson(diffs: Map[String, Difference]): Map[String, String] =
     diffs map {

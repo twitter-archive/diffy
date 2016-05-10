@@ -15,7 +15,7 @@ object DifferencesFilterFactory {
 }
 
 case class JoinedDifferences @Inject() (raw: RawDifferenceCounter, noise: NoiseDifferenceCounter) {
-  lazy val endpoints: Future[Map[String, JoinedEndpoint]] = {
+  def endpoints: Future[Map[String, JoinedEndpoint]] = {
     raw.counter.endpoints map { _.keys } flatMap { eps =>
       Future.collect(
         eps map { ep =>
