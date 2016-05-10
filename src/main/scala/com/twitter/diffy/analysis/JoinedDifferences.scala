@@ -43,9 +43,9 @@ case class JoinedEndpoint(
 {
   def differences = endpoint.differences
   def total = endpoint.total
-  lazy val fields: Map[String, JoinedField] = original map { case (path, field) =>
+  def fields: Map[String, JoinedField] = original map { case (path, field) =>
     path -> JoinedField(endpoint, field, noise.getOrElse(path, FieldMetadata.Empty))
-  } toMap
+  }
 }
 
 case class JoinedField(endpoint: EndpointMetadata, raw: FieldMetadata, noise: FieldMetadata) {
