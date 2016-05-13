@@ -2,7 +2,7 @@ This is an example of diffy.
 
 ## Running
 
-To run it you will need docker and docker-compose installed. Read more about it here: https://www.docker.com/toolbox
+To run it you will need docker and docker-compose (version 1.6.0+) installed. Read more about it here: https://www.docker.com/toolbox
 
 In this directory, run docker compose up command:
 
