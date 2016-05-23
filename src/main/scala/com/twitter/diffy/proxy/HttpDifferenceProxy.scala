@@ -91,10 +91,10 @@ case class SimpleHttpDifferenceProxy (
  * Alternative to SimpleHttpDifferenceProxy allowing HTTPS requests
  */
 case class SimpleHttpsDifferenceProxy (
-                                       settings: Settings,
-                                       collector: InMemoryDifferenceCollector,
-                                       joinedDifferences: JoinedDifferences,
-                                       analyzer: DifferenceAnalyzer)
+   settings: Settings,
+   collector: InMemoryDifferenceCollector,
+   joinedDifferences: JoinedDifferences,
+   analyzer: DifferenceAnalyzer)
   extends HttpDifferenceProxy
 {
   import SimpleHttpDifferenceProxy._
@@ -107,7 +107,9 @@ case class SimpleHttpsDifferenceProxy (
       super.proxy
 
   override def serviceFactory(serverset: String, label: String) =
-    HttpService(Http.client
+    HttpService(
+      Http.client
       .withTls(serverset)
-      .newService(serverset+":"+settings.httpsPort, label))
+      .newService(serverset+":"+settings.httpsPort, label)
+    )
 }
