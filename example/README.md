@@ -29,11 +29,11 @@ There are some other resources running in the same containers. You can play with
 
       $ curl --header "Canonical-Resource: /endpoint" http://localhost:31900/endpoint
       $ curl --header "Canonical-Resource: /endpoint/foo" http://localhost:31900/endpoint/foo
-      $ curl --header "Canonical-Resource: /endpoint/meh" http://localhst:31900/endpoint/meh
+      $ curl --header "Canonical-Resource: /endpoint/meh" http://localhost:31900/endpoint/meh
 
 ## Applying to your own service
 
-As you can see in the docker-compose.yml, you can replace the container with two different versions of your service and expose the ports in a way to keep the same configuratio in both services. For example:
+As you can see in the docker-compose.yml, you can replace the container with two different versions of your service and expose the ports in a way to keep the same configuration in both services. For example:
 
       candidate:
         image: mycompany/my_service:new_version
