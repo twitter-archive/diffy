@@ -5,6 +5,7 @@ services:
     ports:
       - "8888:8888"
       - "31900:31900"
+      - "8881:8881"
     depends_on:
       - primary 
       - secondary
