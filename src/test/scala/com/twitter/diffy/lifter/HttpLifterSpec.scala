@@ -49,8 +49,11 @@ class HttpLifterSpec extends ParentSpec {
 
     val testException = new Exception("test exception")
 
-    def request(method: HttpMethod, uri: String): HttpRequest =
-      new DefaultHttpRequest(HttpVersion.HTTP_1_1, method, uri)
+    def request(method: HttpMethod, uri: String, body: Option[String] = None): HttpRequest = {
+      val req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, method, uri)
+      body foreach { b => req.setContent(ChannelBuffers.wrappedBuffer(b.getBytes(Charsets.Utf8)))}
+      req
+    }
 
     def response(status: HttpResponseStatus, body: String): HttpResponse = {
       val resp = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status)
@@ -76,6 +79,20 @@ class HttpLifterSpec extends ParentSpec {
 
         msg.endpoint.get should equal ("endpoint")
         resultFieldMap.get("request").get should equal (req.toString)
+      }
+
+      it("lift simple Post request") {
+        val lifter = new HttpLifter(false)
+        val requestBody = "request_body"
+        val req = request(HttpMethod.POST, reqUri, Some(requestBody))
+        req.headers().add("Canonical-Resource", "endpoint")
+
+        val msg = Await.result(lifter.liftRequest(req))
+        val resultFieldMap = msg.result.asInstanceOf[FieldMap[String]]
+
+        msg.endpoint.get should equal ("endpoint")
+        resultFieldMap.get("request").get should equal (req.toString)
+        resultFieldMap.get("body").get should equal (requestBody)
       }
     }
 
