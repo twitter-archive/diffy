@@ -26,7 +26,7 @@ object DiffyServiceModule extends TwitterModule {
     flag[String]("master.secondary", "secondary master serverset where known good code is deployed")
 
   val protocol =
-    flag[String]("service.protocol", "Service protocol, thrift or http")
+    flag[String]("service.protocol", "Service protocol: thrift, http or https")
 
   val clientId =
     flag[String]("proxy.clientId", "diffy.proxy", "The clientId to be used by the proxy service to talk to candidate, primary, and master")
@@ -70,6 +70,9 @@ object DiffyServiceModule extends TwitterModule {
   val skipEmailsWhenNoErrors =
     flag[Boolean]("skipEmailsWhenNoErrors", false, "Do not send emails if there are no critical errors")
 
+  var httpsPort =
+    flag[String]("httpsPort", "443", "Port to be used when using HTTPS as a protocol")
+
   @Provides
   @Singleton
   def settings =
@@ -93,7 +96,8 @@ object DiffyServiceModule extends TwitterModule {
       rootUrl(),
       allowHttpSideEffects(),
       excludeHttpHeadersComparison(),
-      skipEmailsWhenNoErrors()
+      skipEmailsWhenNoErrors(),
+      httpsPort()
     )
 
   @Provides

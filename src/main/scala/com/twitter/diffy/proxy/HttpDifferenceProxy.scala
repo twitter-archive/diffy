@@ -86,3 +86,30 @@ case class SimpleHttpDifferenceProxy (
       (!settings.allowHttpSideEffects, httpSideEffectsFilter) andThen
       super.proxy
 }
+
+/**
+ * Alternative to SimpleHttpDifferenceProxy allowing HTTPS requests
+ */
+case class SimpleHttpsDifferenceProxy (
+   settings: Settings,
+   collector: InMemoryDifferenceCollector,
+   joinedDifferences: JoinedDifferences,
+   analyzer: DifferenceAnalyzer)
+  extends HttpDifferenceProxy
+{
+  import SimpleHttpDifferenceProxy._
+
+  override val servicePort = settings.servicePort
+
+  override val proxy =
+    Filter.identity andThenIf
+      (!settings.allowHttpSideEffects, httpSideEffectsFilter) andThen
+      super.proxy
+
+  override def serviceFactory(serverset: String, label: String) =
+    HttpService(
+      Http.client
+      .withTls(serverset)
+      .newService(serverset+":"+settings.httpsPort, label)
+    )
+}
