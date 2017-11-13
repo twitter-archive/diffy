@@ -43,22 +43,22 @@ candidate disagree with each other. If these measurements are roughly the same, 
 determines that there is nothing wrong and that the error can be ignored.
 
 ## How to get started?
+# Running the example
+The example.sh script included here builds and launches example servers as well as a diffy instance. Verify 
+that the following ports are available (9000, 9100, 9200, 8880, 8881, & 8888) and run `./example/run.sh start`.
 
-First, you need to build Diffy by invoking `./sbt assembly` from your diffy directory. This will create 
-a diffy jar at `diffy/target/scala-2.11/diffy-server.jar`.
-
-Diffy comes bundled with an example.sh script that you can run to start comparing examples instances 
-we have already deployed online. Once your local Diffy instance is deployed, you send it a few requests 
-via `curl --header "Canonical-Resource: Html" localhost:8880` and `curl --header "Canonical-Resource: Json" localhost:8880/json`. You can then go to your browser at 
+Once your local Diffy instance is deployed, you send it a few requests 
+like `curl --header "Canonical-Resource: Json" localhost:8880/json?Twitter`. You can then go to your browser at 
 [http://localhost:8888](http://localhost:8888) to see what the differences across our example instances look like.
 
+# Digging deeper
 That was cool but now you want to compare old and new versions of your own service. Here’s how you can 
 start using Diffy to compare three instances of your service:
 
 1. Deploy your old code to `localhost:9990`. This is your primary.
 2. Deploy your old code to `localhost:9991`. This is your secondary.
 3. Deploy your new code to `localhost:9992`. This is your candidate.
-4. Download the latest Diffy binary or build your own from the code.
+4. Download the latest Diffy binary from maven central or build your own from the code using `./sbt assembly`.
 5. Run the Diffy jar with following command line arguments:
 
     ```
@@ -68,24 +68,20 @@ start using Diffy to compare three instances of your service:
     -master.secondary=localhost:9991 \
     -service.protocol=http \
     -serviceName=My-Service \
-    -proxy.port=:31900 \
-    -admin.port=:31159 \
-    -http.port=:31149 \
-    -rootUrl='localhost:31149'
+    -proxy.port=:8880 \
+    -admin.port=:8881 \
+    -http.port=:8888 \
+    -rootUrl='localhost:8888'
     ```
 
 6. Send a few test requests to your Diffy instance on its proxy port:
 
     ```
-    curl localhost:31900/your/application/route?with=queryparams
+    curl localhost:8880/your/application/route?with=queryparams
     ```
 
-7. Watch the differences show up in your browser at [http://localhost:31149](http://localhost:31149).
+7. Watch the differences show up in your browser at [http://localhost:8888](http://localhost:8888).
 
-### Running example on docker-compose
-
-Inside the example directory you will find instructions to run a complete example with apis and diffy configured and ready to run using docker-compose.
- 
 ## FAQ's
    For safety reasons `POST`, `PUT`, ` DELETE ` are ignored by default . Add ` -allowHttpSideEffects=true ` to your command line arguments to enable these verbs.
 
