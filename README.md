@@ -1,6 +1,6 @@
 # Diffy
 
-[![GitHub license][license-badge]](LICENSE)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Build status](https://img.shields.io/travis/twitter/diffy/master.svg)](https://travis-ci.org/twitter/diffy)
 [![Coverage status](https://img.shields.io/codecov/c/github/twitter/diffy/master.svg)](https://codecov.io/github/twitter/diffy)
 [![Project status](https://img.shields.io/badge/status-active-brightgreen.svg)](#status)
