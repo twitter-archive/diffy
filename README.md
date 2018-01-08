@@ -20,6 +20,7 @@ the running instances. It then compares the responses, and reports any regressio
 from those comparisons. The premise for Diffy is that if two implementations of the service return
 “similar” responses for a sufficiently large and diverse set of requests, then the two
 implementations can be treated as equivalent and the newer implementation is regression-free.
+For a more detailed analysis of Diffy checkout this [blogpost](https://blog.twitter.com/engineering/en_us/a/2015/diffy-testing-services-without-writing-tests.html).
 
 ## How does Diffy work?
 
@@ -38,6 +39,7 @@ things:
 2. Non-deterministic noise observed between the primary and secondary instances. Since both of these
    instances are running known-good code, you should expect responses to be in agreement. If not,
    your service may have non-deterministic behavior, which is to be expected.
+![Diffy Topology](https://g.twimg.com/blog/blog/image/Diffy_2.png)
 
 Diffy measures how often primary and secondary disagree with each other vs. how often primary and
 candidate disagree with each other. If these measurements are roughly the same, then Diffy
