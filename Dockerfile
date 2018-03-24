@@ -5,9 +5,9 @@ RUN apt-get update
 ADD . /usr/local/src
 WORKDIR /usr/local/src
 RUN ./sbt assembly
-RUN mv target/scala-2.11 /opt/diffy
+RUN mv target/scala-2.11 /bin/diffy
 
-ENTRYPOINT ["java", "-jar", "/opt/diffy/diffy-server.jar"]
+ENTRYPOINT ["java", "-jar", "/bin/diffy/diffy-server.jar"]
 
 CMD [ "-candidate=localhost:9992", \
       "-master.primary=localhost:9990", \
