@@ -1,0 +1,8 @@
+FROM java:8
+
+ADD . /usr/local/src
+WORKDIR /usr/local/src
+
+RUN javac DockerServerProduction.java
+ENTRYPOINT ["java", "-cp", "/usr/local/src", "DockerServerProduction"]
+CMD ["9000"]
