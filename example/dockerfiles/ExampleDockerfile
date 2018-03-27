@@ -1,0 +1,8 @@
+FROM java:8
+
+ADD . /usr/local/src
+WORKDIR /usr/local/src
+
+RUN javac ExampleServers.java
+ENTRYPOINT ["java", "-cp", "/usr/local/src", "ExampleServers"]
+CMD ["9000", "9100", "9200"]
