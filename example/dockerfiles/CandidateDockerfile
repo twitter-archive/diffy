@@ -1,8 +1,0 @@
-FROM java:8
-
-ADD . /usr/local/src
-WORKDIR /usr/local/src
-
-RUN javac DockerServerCandidate.java
-ENTRYPOINT ["java", "-cp", "/usr/local/src", "DockerServerCandidate"]
-CMD ["9000"]
