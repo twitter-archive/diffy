@@ -24,6 +24,9 @@ then
     -http.port=:8888 \
     -rootUrl='localhost:8888' &\
 
+    sleep 3
+    echo "Wait for Diffy to deploy"
+    sleep 2
 else
     echo "Please make sure ports 9000, 9100, 9200, 8880, 8881, & 8888 are available before running \"example/run.sh start\""
 fi
