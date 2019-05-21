@@ -39,7 +39,6 @@ things:
 2. Non-deterministic noise observed between the primary and secondary instances. Since both of these
    instances are running known-good code, you should expect responses to be in agreement. If not,
    your service may have non-deterministic behavior, which is to be expected.
-![Diffy Topology](https://g.twimg.com/blog/blog/image/Diffy_2.png)
 
 Diffy measures how often primary and secondary disagree with each other vs. how often primary and
 candidate disagree with each other. If these measurements are roughly the same, then Diffy
