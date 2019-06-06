@@ -1,6 +1,6 @@
 resolvers ++= Seq(
   "Twitter's Repository" at "https://maven.twttr.com/",
-  "jgit-repo" at "http://download.eclipse.org/jgit/maven"
+  "jgit-repo" at "https://download.eclipse.org/jgit/maven"
 )
 
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.13.0")
