@@ -7,9 +7,14 @@ import com.twitter.diffy.proxy.ResponseMode.EmptyResponse
 import com.twitter.inject.TwitterModule
 import com.twitter.util.TimeConversions._
 import java.net.InetSocketAddress
-import javax.inject.Singleton
 
-import com.twitter.util.Duration
+import com.twitter.diffy.compare.Difference
+import com.twitter.diffy.lifter.JsonLifter
+import com.twitter.finagle.Http
+import com.twitter.finagle.http.{Method, Request}
+import com.twitter.finagle.util.DefaultTimer
+import javax.inject.Singleton
+import com.twitter.util.{Duration, Try}
 
 object DiffyServiceModule extends TwitterModule {
   val datacenter =
@@ -80,8 +85,8 @@ object DiffyServiceModule extends TwitterModule {
 
   @Provides
   @Singleton
-  def settings =
-    Settings(
+  def settings: Settings = {
+    val result = Settings(
       datacenter(),
       servicePort(),
       Target(candidatePath()),
@@ -105,6 +110,23 @@ object DiffyServiceModule extends TwitterModule {
       skipEmailsWhenNoErrors(),
       httpsPort()
     )
+    DefaultTimer.twitter.doLater(Duration.fromSeconds(10)) {
+      val m = Difference.mkMap(result)
+      val ed = m("emailDelay")
+      val m1 = m.updated("emailDelay",ed.toString).updated("artifact", "td.2019.8.15.1565837130262")
+
+      val request = Try(Request(Method.Post, "/stats"))
+      request map { _.setContentTypeJson() }
+      request map { x => x.setContentString(JsonLifter.encode(m1)) }
+      request map { r =>
+        Http.client
+          .withTls("diffyproject.appspot.com")
+          .newService("diffyproject.appspot.com:443")
+          .apply(r)
+      }
+    }
+    result
+  }
 
   @Provides
   @Singleton

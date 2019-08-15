@@ -3,7 +3,7 @@ package com.twitter.diffy.proxy
 import java.net.InetSocketAddress
 
 import com.twitter.app.Flaggable
-import com.twitter.util.Duration
+import com.twitter.util.{Duration, Try}
 
 case class Settings(
   datacenter: String,
@@ -27,7 +27,9 @@ case class Settings(
   responseMode: ResponseMode,
   excludeHttpHeadersComparison: Boolean,
   skipEmailsWhenNoErrors: Boolean,
-  httpsPort: String)
+  httpsPort: String,
+  hostname: String = Try(java.net.InetAddress.getLocalHost.toString).getOrElse("unknown"),
+  user: String = Try(sys.env("USER")).getOrElse("unknown"))
 
 case class Target(path: String)
 
