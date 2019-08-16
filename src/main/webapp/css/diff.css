@@ -14,6 +14,12 @@ html, body {
 a {
   cursor: pointer; }
 
+.alert {
+    padding: 0px;
+    margin-bottom: 0px;
+    border: 0px solid transparent;
+    border-radius: 0;
+}
 .btn {
   border-radius: 3px;
   margin-bottom: 5px; }
