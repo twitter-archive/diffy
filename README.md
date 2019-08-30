@@ -3,13 +3,10 @@
 [![GitHub license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Build status](https://img.shields.io/travis/twitter/diffy/master.svg)](https://travis-ci.org/twitter/diffy)
 [![Coverage status](https://img.shields.io/codecov/c/github/twitter/diffy/master.svg)](https://codecov.io/github/twitter/diffy)
-[![Project status](https://img.shields.io/badge/status-active-brightgreen.svg)](#status)
-[![Gitter](https://img.shields.io/badge/gitter-join%20chat-green.svg)](https://gitter.im/twitter/diffy)
-[![Maven Central](https://img.shields.io/maven-central/v/com.twitter/diffy_2.11.svg)](https://maven-badges.herokuapp.com/maven-central/com.twitter/diffy_2.11)
 
 ## Status
 
-This project is used in production at Twitter and is being actively developed and maintained. Feel
+This project is used in production at Twitter and is being actively developed and maintained as [Opendiffy](https://github.com/opendiffy/diffy). Feel
 free to contact us on gitter or [@diffyproject](https://twitter.com/diffyproject).
 
 ## What is Diffy?
@@ -85,32 +82,9 @@ start using Diffy to compare three instances of your service:
 
 7. Watch the differences show up in your browser at [http://localhost:8888](http://localhost:8888).
 
-## Using Diffy with Docker
+## Using Diffy via Docker
 
-You can pull the official docker image with `docker pull diffy/diffy`
-
-And run it with
-```
-docker run -ti \
-  -p 8880:8880 -p 8881:8881 -p 8888:8888 \
-  diffy/diffy \
-    -candidate=localhost:9992 \
-    -master.primary=localhost:9990 \
-    -master.secondary=localhost:9991 \
-    -service.protocol=http \
-    -serviceName="Test-Service" \
-    -proxy.port=:8880 \
-    -admin.port=:8881 \
-    -http.port=:8888 \
-    -rootUrl=localhost:8888
-```
-
-You should now be able to point to:
- - http://localhost:8888 to see the web interface
- - http://localhost:8881/admin for admin console
- - Use port 8880 to make the API requests
-
-To build from source you can run `docker build -t diffy .`
+Please refer to the [Diffy dockerhub page](https://hub.docker.com/r/diffy/diffy) for how to deploy the docker image.
 
 ## FAQ's
    For safety reasons `POST`, `PUT`, ` DELETE ` are ignored by default . Add ` -allowHttpSideEffects=true ` to your command line arguments to enable these verbs.
