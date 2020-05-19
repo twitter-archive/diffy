@@ -3,7 +3,7 @@ archived/dist/
 archived/project/boot/
 archived/project/plugins/project/
 archived/project/plugins/src_managed/
-archived/project/project/target/config-classes/
+archived/project/project/target/*
 *.class
 *.cache
 *.log
