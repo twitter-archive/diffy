@@ -1,11 +1,8 @@
-archived/target/
-archived/dist/
-archived/project/boot/
-archived/project/plugins/project/
-archived/project/plugins/src_managed/
-archived/project/project/target/config-classes/
-*.class
-*.cache
+target/
+dist/
+project/boot/
+project/plugins/project/
+project/plugins/src_managed/
 *.log
 *.tmproj
 lib_managed/
@@ -17,5 +14,5 @@ lib_managed/
 .ensime
 .ivyjars
 out/
-archived/sbt-launch.jar
-archived/example/*.class
+sbt-launch.jar
+example/*.class
