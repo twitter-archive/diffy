@@ -13,10 +13,6 @@ This project's original author (and former twitter employee) maintain their own 
 [![Gitter](https://img.shields.io/badge/gitter-join%20chat-green.svg)](https://gitter.im/twitter/diffy)
 [![Maven Central](https://img.shields.io/maven-central/v/com.twitter/diffy_2.11.svg)](https://maven-badges.herokuapp.com/maven-central/com.twitter/diffy_2.11)
 
-## Status
-
-This project is used in production at Twitter and is being actively developed and maintained. Feel
-free to contact us on gitter or [@diffyproject](https://twitter.com/diffyproject).
 
 ## What is Diffy?
 
