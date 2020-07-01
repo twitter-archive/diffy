@@ -1,7 +1,7 @@
-Twitter has decided to shelve open source Diffy project which is built on Twitter's outdated tech stack. We are reinventing in this space internally to accommodate newer use cases of Twitter services. Based on the internal success of these project, we will evaluate if we want to open source Twitter's future solutions in this space.   
+Twitter has decided to archive this project, as it was built on our outdated tech stack, making it unpractical to maintain it in its current form. Furthermore, we are reinventing in this space internally to accommodate newer use-cases for validating our services. As we mature these new approaches, we will reevaluate how and when to re-release these new solutions as open source software. Thank you for your understanding.
 We won't be accepting pull requests or responding to issues for this project anymore.
 
-This project's original author (and former twitter employee) maintain their own version of this project, called [Opendiffy](https://github.com/opendiffy/diffy).
+Note that @puneetkhanduri, this project's original author and a former Twitter employee maintains their own version of this project, called [Opendiffy](https://github.com/opendiffy/diffy).
 
 
 # Diffy
